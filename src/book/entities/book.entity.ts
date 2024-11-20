@@ -1,5 +1,5 @@
-import { User } from 'auth/entities/user.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Business } from 'business/entities/business.entity';
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('books')
 export class Book {
@@ -18,9 +18,6 @@ export class Book {
   @Column()
   value: number;
 
-  @ManyToOne(() => User, (user) => user.books)
-  user: User;
-
-  @Column()
-  businessId: string;
+  @OneToOne(() => Business, (business) => business.book)
+  business: Business;
 }

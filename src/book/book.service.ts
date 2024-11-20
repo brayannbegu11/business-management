@@ -17,6 +17,12 @@ export class BookService {
 
   // get registers from the book
   async getBooksByBusiness(businessId: string) {
-    return this.bookRepository.find({ where: { businessId } });
+    return this.bookRepository.findOne({
+      where: {
+        business: {
+          id: parseInt(businessId, 10),
+        },
+      },
+    });
   }
 }

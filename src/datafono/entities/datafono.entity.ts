@@ -1,5 +1,5 @@
-import { User } from 'auth/entities/user.entity';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Business } from 'business/entities/business.entity';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne } from 'typeorm';
 
 @Entity('datafonos')
 export class Datafono {
@@ -15,9 +15,6 @@ export class Datafono {
   @Column()
   value: number;
 
-  @ManyToOne(() => User, (user) => user.datafonos)
-  user: User;
-
-  @Column()
-  businessId: string; // Relacionado al negocio
+  @OneToOne(() => Business, (business) => business.datafono)
+  business: Business;
 }

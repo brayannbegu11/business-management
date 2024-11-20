@@ -1,5 +1,4 @@
-import { Book } from 'book/entities/book.entity';
-import { Datafono } from 'datafono/entities/datafono.entity';
+import { Business } from 'business/entities/business.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
 @Entity('users')
@@ -16,9 +15,6 @@ export class User {
   @Column({ default: 'user' })
   role: 'admin' | 'user';
 
-  @OneToMany(() => Book, (book) => book.user) // Relación uno a muchos con la tabla Book
-  books: Book[];
-
-  @OneToMany(() => Datafono, (datafono) => datafono.user) // Relación uno a muchos con la tabla Book
-  datafonos: Datafono[];
+  @OneToMany(() => Business, (business) => business.user)
+  businesses: Business[];
 }

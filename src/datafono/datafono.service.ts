@@ -17,6 +17,12 @@ export class DatafonoService {
 
   // get registers from business
   async getDatafonoByBusiness(businessId: string) {
-    return this.datafonoRepository.find({ where: { businessId } });
+    return this.datafonoRepository.findOne({
+      where: {
+        business: {
+          id: parseInt(businessId, 10),
+        },
+      },
+    });
   }
 }
