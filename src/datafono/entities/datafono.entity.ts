@@ -12,7 +12,7 @@ export class Datafono {
   @Column()
   category: string;
 
-  @Column('decimal')
+  @Column()
   value: number;
 
   @ManyToOne(() => User, (user) => user.datafonos)
