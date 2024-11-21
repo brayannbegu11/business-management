@@ -38,6 +38,14 @@ export class BusinessService {
     await this.bookRepository.save(book);
 
     savedBusiness.book = book;
+
+    // Create Datafono
+    const datafono = this.datafonoRepository.create({
+      business: savedBusiness,
+    });
+    await this.datafonoRepository.save(datafono);
+
+    savedBusiness.datafono = datafono;
     return this.businessRepository.save(savedBusiness);
   }
 

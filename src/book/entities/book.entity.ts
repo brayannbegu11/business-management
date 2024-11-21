@@ -12,22 +12,22 @@ export class Book {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: false, default: () => 'CURRENT_DATE' }) // Fecha por defecto (fecha actual)
+  @Column({ nullable: false, default: () => 'CURRENT_DATE' })
   date: string;
 
-  @Column({ nullable: false, default: '' }) // Descripción predeterminada vacía
+  @Column({ nullable: false, default: '' })
   description: string;
 
-  @Column({ nullable: false, default: '' }) // Categoría predeterminada vacía
+  @Column({ nullable: false, default: '' })
   category: string;
 
-  @Column({ nullable: false, default: 0 }) // Valor predeterminado de 0
+  @Column({ nullable: false, default: 0 })
   value: number;
 
-  @Column({ nullable: false, default: 0 }) // Balance predeterminado de 0
+  @Column({ nullable: false, default: 0 })
   balance: number;
 
   @OneToOne(() => Business, (business) => business.book)
-  @JoinColumn() // Definir que esta es la columna de unión con Business
+  @JoinColumn()
   business: Business;
 }
