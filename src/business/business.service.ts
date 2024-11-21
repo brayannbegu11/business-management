@@ -59,7 +59,7 @@ export class BusinessService {
   ): Promise<Business> {
     const business = await this.businessRepository.findOne({
       where: { id: businessId },
-      relations: ['user'],
+      relations: ['users'],
     });
     if (!business) {
       throw new Error('Negocio no encontrado');

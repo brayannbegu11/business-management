@@ -35,15 +35,6 @@ export class BusinessController {
     return this.businessService.findOne(id);
   }
 
-  @Patch(':id')
-  async addUsers(
-    @Param('id') id: number,
-    @Body() body: { userIds: number[] },
-  ): Promise<Business> {
-    const { userIds } = body;
-    return this.businessService.addUsersToBusiness(id, userIds);
-  }
-
   // Update the business
   @Patch(':id')
   async update(
@@ -52,6 +43,15 @@ export class BusinessController {
   ): Promise<Business> {
     const { name } = body;
     return this.businessService.updateBusiness(id, name);
+  }
+  // Update: Add Users to the business
+  @Patch(':id/users')
+  async addUsers(
+    @Param('id') id: number,
+    @Body() body: { userIds: number[] },
+  ): Promise<Business> {
+    const { userIds } = body;
+    return this.businessService.addUsersToBusiness(id, userIds);
   }
 
   // Delete a business
