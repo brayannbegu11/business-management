@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Business } from './entities/business.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { User } from 'auth/entities/user.entity';
 import { Book } from 'book/entities/book.entity';
 import { Datafono } from 'datafono/entities/datafono.entity';
@@ -23,12 +23,15 @@ export class BusinessService {
   ) {}
 
   // Create business (With book and datafono)
-  async createBusiness(name: string, userId: number): Promise<Business> {
-    const user = await this.userRepository.findOneBy({ id: userId });
-    if (!user) {
-      throw new Error('Usuario no encontrado');
+  async createBusiness(name: string, userIds: number[]): Promise<Business> {
+    const newBusiness = this.businessRepository.create({ name });
+    const users = await this.userRepository.find({
+      where: { id: In(userIds) },
+    });
+    if (!users.length) {
+      throw new Error('No se encontraron usuarios');
     }
-    const newBusiness = this.businessRepository.create({ name, user });
+    newBusiness.users = users;
     const savedBusiness = await this.businessRepository.save(newBusiness);
 
     // Create book
@@ -49,7 +52,28 @@ export class BusinessService {
     return this.businessRepository.save(savedBusiness);
   }
 
-  // Get all the business
+  // Assign users to business
+  async addUsersToBusiness(
+    businessId: number,
+    userIds: number[],
+  ): Promise<Business> {
+    const business = await this.businessRepository.findOne({
+      where: { id: businessId },
+      relations: ['user'],
+    });
+    if (!business) {
+      throw new Error('Negocio no encontrado');
+    }
+    const usersToAdd = await this.userRepository.find({
+      where: { id: In(userIds) },
+    });
+
+    business.users = [...business.users, ...usersToAdd];
+
+    return this.businessRepository.save(business);
+  }
+
+  // Get all the businesses
   async findAll(): Promise<Business[]> {
     return this.businessRepository.find({
       relations: ['user', 'book', 'datafono'],

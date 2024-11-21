@@ -17,10 +17,10 @@ export class BusinessController {
   // Create a business
   @Post()
   async create(
-    @Body() body: { name: string; userId: number },
+    @Body() body: { name: string; userIds: number[] },
   ): Promise<Business> {
-    const { name, userId } = body;
-    return this.businessService.createBusiness(name, userId);
+    const { name, userIds } = body;
+    return this.businessService.createBusiness(name, userIds);
   }
 
   // Get all the business
@@ -33,6 +33,15 @@ export class BusinessController {
   @Get(':id')
   async findOne(@Param('id') id: number): Promise<Business> {
     return this.businessService.findOne(id);
+  }
+
+  @Patch(':id')
+  async addUsers(
+    @Param('id') id: number,
+    @Body() body: { userIds: number[] },
+  ): Promise<Business> {
+    const { userIds } = body;
+    return this.businessService.addUsersToBusiness(id, userIds);
   }
 
   // Update the business

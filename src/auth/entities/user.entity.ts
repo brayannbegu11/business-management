@@ -1,5 +1,5 @@
 import { Business } from 'business/entities/business.entity';
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
 
 @Entity('users')
 export class User {
@@ -15,6 +15,6 @@ export class User {
   @Column({ default: 'user' })
   role: 'admin' | 'user';
 
-  @OneToMany(() => Business, (business) => business.user)
+  @ManyToMany(() => Business, (business) => business.users)
   businesses: Business[];
 }

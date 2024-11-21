@@ -5,7 +5,8 @@ import {
   Column,
   Entity,
   JoinColumn,
-  ManyToOne,
+  JoinTable,
+  ManyToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -18,8 +19,9 @@ export class Business {
   @Column()
   name: string;
 
-  @ManyToOne(() => User, (user) => user.businesses)
-  user: User;
+  @ManyToMany(() => User, (user) => user.businesses)
+  @JoinTable()
+  users: User[];
 
   @OneToOne(() => Book, (book) => book.business)
   @JoinColumn()
