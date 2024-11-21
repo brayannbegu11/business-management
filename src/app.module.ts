@@ -5,6 +5,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { BookModule } from './book/book.module';
 import { DatafonoModule } from './datafono/datafono.module';
+import { config } from 'dotenv';
+import { BusinessModule } from './business/business.module';
+config();
 
 @Module({
   imports: [
@@ -17,6 +20,7 @@ import { DatafonoModule } from './datafono/datafono.module';
     AuthModule,
     BookModule,
     DatafonoModule,
+    BusinessModule,
   ],
   controllers: [AppController],
   providers: [AppService],

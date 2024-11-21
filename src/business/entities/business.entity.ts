@@ -23,7 +23,7 @@ export class Business {
 
   @OneToOne(() => Book, (book) => book.business)
   @JoinColumn()
-  book: Datafono;
+  book: Book;
 
   // Relación One-to-One con Datafono
   @OneToOne(() => Datafono, (datafono) => datafono.business)

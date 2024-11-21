@@ -6,6 +6,7 @@ import { Datafono } from './entities/datafono.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Datafono])],
+  exports: [TypeOrmModule],
   providers: [DatafonoService],
   controllers: [DatafonoController],
 })
