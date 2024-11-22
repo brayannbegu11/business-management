@@ -63,21 +63,31 @@ export class BusinessService {
 
   // Assign users to business
   async addUsersToBusiness(
-    businessId: number,
-    userIds: number[],
+    businessId: string,
+    userIds: number,
   ): Promise<Business> {
     const business = await this.businessRepository.findOne({
-      where: { id: businessId },
+      where: { id: parseInt(businessId) },
       relations: ['users'],
     });
     if (!business) {
       throw new Error('Negocio no encontrado');
     }
-    const usersToAdd = await this.userRepository.find({
-      where: { id: In(userIds) },
+    const userToAdd = await this.userRepository.find({
+      where: { id: userIds },
     });
+    if (!userToAdd.length) {
+      throw new Error('Usuarios no encontrados');
+    }
+    const existingUserIds = business.users.map((user) => user.id);
+    const newUsers = userToAdd.filter(
+      (user) => !existingUserIds.includes(user.id),
+    );
+    if (!newUsers.length) {
+      throw new Error('Todos los usuarios ya están asignados a este negocio');
+    }
 
-    business.users = [...business.users, ...usersToAdd];
+    business.users = [...business.users, ...newUsers];
 
     return this.businessRepository.save(business);
   }

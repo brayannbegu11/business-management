@@ -39,6 +39,7 @@ export class BusinessController {
 
   // Get all the business
   @Get('user/:id')
+  @UseGuards(JwtGuard)
   async findBusinessByUser(@Param('id') id: number): Promise<Business[]> {
     return this.businessService.findBusinessByUser(id);
   }
@@ -66,20 +67,20 @@ export class BusinessController {
     );
   }
   // Update: Add Users to the business
-  @Patch(':id/users')
+  @Patch(':businessId/add-user/')
   @UseGuards(JwtGuard)
   async addUsers(
-    @Param('id') id: number,
-    @Body() body: { userIds: number[] },
+    @Param('businessId') businessId: string,
+    @Body() body: { userId: number },
   ): Promise<Business> {
-    const { userIds } = body;
-    return this.businessService.addUsersToBusiness(id, userIds);
+    const { userId } = body;
+    return this.businessService.addUsersToBusiness(businessId, userId);
   }
 
   // Delete a business
 
   @Delete(':id')
-  // @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard)
   async delete(@Param('id') id: number): Promise<void> {
     return this.businessService.deleteBusiness(id);
   }
