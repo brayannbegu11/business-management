@@ -6,6 +6,7 @@ import { Business } from './entities/business.entity';
 import { AuthModule } from 'auth/auth.module';
 import { BookModule } from 'book/book.module';
 import { DatafonoModule } from 'datafono/datafono.module';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { DatafonoModule } from 'datafono/datafono.module';
     AuthModule,
     BookModule,
     DatafonoModule,
+    JwtModule,
   ],
   providers: [BusinessService],
   controllers: [BusinessController],

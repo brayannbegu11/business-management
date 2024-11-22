@@ -10,8 +10,16 @@ export class AuthController {
     @Body('email') email: string,
     @Body('password') password: string,
     @Body('role') role: 'admin' | 'user',
+    @Body('firstname') firstname: string,
+    @Body('lastname') lastname: string,
   ) {
-    return this.authService.register(email, password, role);
+    return this.authService.register(
+      email,
+      password,
+      role,
+      firstname,
+      lastname,
+    );
   }
 
   @Post('login')

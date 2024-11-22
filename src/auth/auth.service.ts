@@ -18,6 +18,8 @@ export class AuthService {
     email: string,
     password: string,
     role: 'admin' | 'user' = 'user',
+    firstname: string,
+    lastname: string,
   ) {
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -25,6 +27,8 @@ export class AuthService {
       email,
       password: hashedPassword,
       role,
+      firstname,
+      lastname,
     });
 
     return this.userRepository.save(user);

@@ -10,10 +10,10 @@ export class User {
   email: string;
 
   @Column({ nullable: false, default: '' })
-  fist_name: string;
+  firstname: string;
 
   @Column({ nullable: false, default: '' })
-  last_name: string;
+  lastname: string;
 
   @Column()
   password: string;

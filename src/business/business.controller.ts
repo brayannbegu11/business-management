@@ -6,9 +6,11 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { BusinessService } from './business.service';
 import { Business } from './entities/business.entity';
+import { JwtGuard } from 'auth/jwt/jwt.guard';
 
 @Controller('business')
 export class BusinessController {
@@ -16,6 +18,7 @@ export class BusinessController {
 
   // Create a business
   @Post()
+  @UseGuards(JwtGuard)
   async create(
     @Body() body: { name: string; userIds: number[] },
   ): Promise<Business> {
@@ -25,18 +28,21 @@ export class BusinessController {
 
   // Get all the business
   @Get()
+  @UseGuards(JwtGuard)
   async findAll(): Promise<Business[]> {
     return this.businessService.findAll();
   }
 
   // Get business by ID
   @Get(':id')
+  @UseGuards(JwtGuard)
   async findOne(@Param('id') id: number): Promise<Business> {
     return this.businessService.findOne(id);
   }
 
   // Update the business
   @Patch(':id')
+  @UseGuards(JwtGuard)
   async update(
     @Param('id') id: number,
     @Body() body: { name: string },
@@ -46,6 +52,7 @@ export class BusinessController {
   }
   // Update: Add Users to the business
   @Patch(':id/users')
+  @UseGuards(JwtGuard)
   async addUsers(
     @Param('id') id: number,
     @Body() body: { userIds: number[] },
@@ -57,6 +64,7 @@ export class BusinessController {
   // Delete a business
 
   @Delete(':id')
+  @UseGuards(JwtGuard)
   async delete(@Param('id') id: number): Promise<void> {
     return this.businessService.deleteBusiness(id);
   }

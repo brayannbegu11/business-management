@@ -15,7 +15,7 @@ config();
       signOptions: { expiresIn: process.env.JWT_EXPIRATION },
     }),
   ],
-  exports: [TypeOrmModule],
+  exports: [TypeOrmModule, JwtModule],
   providers: [AuthService],
   controllers: [AuthController],
 })
