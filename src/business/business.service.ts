@@ -23,8 +23,17 @@ export class BusinessService {
   ) {}
 
   // Create business (With book and datafono)
-  async createBusiness(name: string, userIds: number[]): Promise<Business> {
-    const newBusiness = this.businessRepository.create({ name });
+  async createBusiness(
+    name: string,
+    phone_number: string,
+    location: string,
+    userIds: number[],
+  ): Promise<Business> {
+    const newBusiness = this.businessRepository.create({
+      name,
+      phone_number,
+      location,
+    });
     const users = await this.userRepository.find({
       where: { id: In(userIds) },
     });
@@ -76,7 +85,7 @@ export class BusinessService {
   // Get all the businesses
   async findAll(): Promise<Business[]> {
     return this.businessRepository.find({
-      relations: ['user', 'book', 'datafono'],
+      relations: ['users', 'book', 'datafono'],
     });
   }
 
@@ -84,14 +93,21 @@ export class BusinessService {
   async findOne(id: number): Promise<Business> {
     return this.businessRepository.findOne({
       where: { id },
-      relations: ['user', 'book', 'datafono'],
+      relations: ['users', 'book', 'datafono'],
     });
   }
 
   // Update a business
-  async updateBusiness(id: number, name: string): Promise<Business> {
+  async updateBusiness(
+    id: number,
+    name: string,
+    phone_number: string,
+    location: string,
+  ): Promise<Business> {
     const business = await this.findOne(id);
     business.name = name;
+    business.location = location;
+    business.phone_number = phone_number;
     return this.businessRepository.save(business);
   }
 

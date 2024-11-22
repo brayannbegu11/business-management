@@ -20,10 +20,21 @@ export class BusinessController {
   @Post()
   @UseGuards(JwtGuard)
   async create(
-    @Body() body: { name: string; userIds: number[] },
+    @Body()
+    body: {
+      name: string;
+      phone_number: string;
+      location: string;
+      userIds: number[];
+    },
   ): Promise<Business> {
-    const { name, userIds } = body;
-    return this.businessService.createBusiness(name, userIds);
+    const { name, phone_number, location, userIds } = body;
+    return this.businessService.createBusiness(
+      name,
+      phone_number,
+      location,
+      userIds,
+    );
   }
 
   // Get all the business
@@ -45,10 +56,15 @@ export class BusinessController {
   @UseGuards(JwtGuard)
   async update(
     @Param('id') id: number,
-    @Body() body: { name: string },
+    @Body() body: { name: string; phone_number: string; location: string },
   ): Promise<Business> {
-    const { name } = body;
-    return this.businessService.updateBusiness(id, name);
+    const { name, phone_number, location } = body;
+    return this.businessService.updateBusiness(
+      id,
+      name,
+      phone_number,
+      location,
+    );
   }
   // Update: Add Users to the business
   @Patch(':id/users')

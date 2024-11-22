@@ -19,6 +19,12 @@ export class Business {
   @Column()
   name: string;
 
+  @Column({ nullable: false, default: '' })
+  phone_number: string;
+
+  @Column({ nullable: false, default: '' })
+  location: string;
+
   @ManyToMany(() => User, (user) => user.businesses)
   @JoinTable()
   users: User[];

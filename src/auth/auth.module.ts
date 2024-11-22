@@ -12,7 +12,7 @@ config();
     TypeOrmModule.forFeature([User]),
     JwtModule.register({
       secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: process.env.JWT_EXPIRATION },
+      signOptions: { expiresIn: '60m' },
     }),
   ],
   exports: [TypeOrmModule, JwtModule],
