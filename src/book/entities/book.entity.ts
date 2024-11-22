@@ -27,7 +27,9 @@ export class Book {
   @Column({ nullable: false, default: 0 })
   balance: number;
 
-  @OneToOne(() => Business, (business) => business.book)
+  @OneToOne(() => Business, (business) => business.book, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn()
   business: Business;
 }

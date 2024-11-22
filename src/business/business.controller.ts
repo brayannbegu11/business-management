@@ -18,7 +18,7 @@ export class BusinessController {
 
   // Create a business
   @Post()
-  @UseGuards(JwtGuard)
+  // @UseGuards(JwtGuard)
   async create(
     @Body()
     body: {
@@ -38,10 +38,9 @@ export class BusinessController {
   }
 
   // Get all the business
-  @Get()
-  @UseGuards(JwtGuard)
-  async findAll(): Promise<Business[]> {
-    return this.businessService.findAll();
+  @Get('user/:id')
+  async findBusinessByUser(@Param('id') id: number): Promise<Business[]> {
+    return this.businessService.findBusinessByUser(id);
   }
 
   // Get business by ID
@@ -80,7 +79,7 @@ export class BusinessController {
   // Delete a business
 
   @Delete(':id')
-  @UseGuards(JwtGuard)
+  // @UseGuards(JwtGuard)
   async delete(@Param('id') id: number): Promise<void> {
     return this.businessService.deleteBusiness(id);
   }

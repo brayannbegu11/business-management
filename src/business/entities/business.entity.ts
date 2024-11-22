@@ -29,12 +29,18 @@ export class Business {
   @JoinTable()
   users: User[];
 
-  @OneToOne(() => Book, (book) => book.business)
+  @OneToOne(() => Book, (book) => book.business, {
+    eager: true,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn()
   book: Book;
 
   // Relación One-to-One con Datafono
-  @OneToOne(() => Datafono, (datafono) => datafono.business)
+  @OneToOne(() => Datafono, (datafono) => datafono.business, {
+    eager: true,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn()
   datafono: Datafono;
 }

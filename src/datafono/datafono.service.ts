@@ -25,4 +25,7 @@ export class DatafonoService {
       },
     });
   }
+  async deleteDatafono(id: number): Promise<void> {
+    await this.datafonoRepository.delete(id);
+  }
 }

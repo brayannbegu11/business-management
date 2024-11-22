@@ -25,4 +25,7 @@ export class BookService {
       },
     });
   }
+  async deleteBook(id: number): Promise<void> {
+    await this.bookRepository.delete(id);
+  }
 }

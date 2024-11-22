@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { DatafonoService } from './datafono.service';
 import { Datafono } from './entities/datafono.entity';
 import { JwtGuard } from 'auth/jwt/jwt.guard';
@@ -15,9 +23,15 @@ export class DatafonoController {
   }
 
   // Get the records
-  @Get('business/:businessId')
+  @Get('datafono/:businessId')
   @UseGuards(JwtGuard)
   async getDatafonoByBusiness(@Param('businessId') businessId: string) {
     return this.bookservice.getDatafonoByBusiness(businessId);
+  }
+
+  @Delete('datafono/:datafonoId')
+  @UseGuards(JwtGuard)
+  async deleteBook(@Param('datafonoId') datafonoId: number) {
+    return this.bookservice.deleteDatafono(datafonoId);
   }
 }

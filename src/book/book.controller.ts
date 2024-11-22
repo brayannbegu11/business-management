@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { BookService } from './book.service';
 import { Book } from './entities/book.entity';
 import { JwtGuard } from 'auth/jwt/jwt.guard';
@@ -15,9 +23,15 @@ export class BookController {
   }
 
   // Get the records
-  @Get('business/:businessId')
+  @Get('books/:businessId')
   @UseGuards(JwtGuard)
   async getBooksByBusiness(@Param('businessId') businessId: string) {
     return this.bookservice.getBooksByBusiness(businessId);
+  }
+
+  @Delete('books/:bookid')
+  @UseGuards(JwtGuard)
+  async deleteBook(@Param('bookId') bookId: number) {
+    return this.bookservice.deleteBook(bookId);
   }
 }

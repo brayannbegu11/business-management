@@ -21,7 +21,9 @@ export class Datafono {
   @Column({ nullable: false, default: 0 })
   value: number;
 
-  @OneToOne(() => Business, (business) => business.datafono)
+  @OneToOne(() => Business, (business) => business.datafono, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn()
   business: Business;
 }

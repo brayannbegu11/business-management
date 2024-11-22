@@ -89,6 +89,21 @@ export class BusinessService {
     });
   }
 
+  //Get business by user
+  async findBusinessByUser(userId: number) {
+    const data = await this.businessRepository.find({
+      relations: ['users', 'book', 'datafono'], // Carga la relación users
+      where: {
+        users: {
+          id: userId,
+        },
+      },
+    });
+
+    console.log('Negocios:', data);
+    return data;
+  }
+
   // Get business for id
   async findOne(id: number): Promise<Business> {
     return this.businessRepository.findOne({
