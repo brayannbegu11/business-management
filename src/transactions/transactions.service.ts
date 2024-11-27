@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Transaction } from './entities/transactions.entity';
 import { Book } from 'book/entities/book.entity';
 import { Repository } from 'typeorm';
+import Decimal from 'decimal.js';
 
 @Injectable()
 export class TransactionService {
@@ -53,12 +54,16 @@ export class TransactionService {
     category: string,
     value: number,
   ): number {
+    const prevBalance = new Decimal(previousBalance);
+    const transactionValue = new Decimal(value);
+
     switch (category) {
       case 'venta':
-        return previousBalance + value;
+      case 'ingreso':
+        return prevBalance.plus(transactionValue).toNumber();
       case 'compra':
       case 'gasto':
-        return previousBalance - value;
+        return prevBalance.minus(transactionValue).toNumber();
       default:
         return previousBalance;
     }

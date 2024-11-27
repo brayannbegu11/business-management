@@ -23,7 +23,7 @@ export class BookController {
   }
 
   // Get the records
-  @Get('books/:businessId')
+  @Get('business/:businessId')
   @UseGuards(JwtGuard)
   async getBooksByBusiness(@Param('businessId') businessId: string) {
     return this.bookservice.getBooksByBusiness(businessId);
