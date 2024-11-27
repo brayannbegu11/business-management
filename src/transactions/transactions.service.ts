@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Transaction } from './entities/transactions.entity';
-import { Book } from 'book/entities/book.entity';
-import { Repository } from 'typeorm';
+// import { Book } from 'book/entities/book.entity';
+import { DataSource, Repository } from 'typeorm';
 import Decimal from 'decimal.js';
 
 @Injectable()
@@ -10,8 +10,8 @@ export class TransactionService {
   constructor(
     @InjectRepository(Transaction)
     private transactionRepository: Repository<Transaction>,
-    @InjectRepository(Book)
-    private bookRepository: Repository<Book>,
+
+    private dataSource: DataSource,
   ) {}
 
   async createTransaction(
@@ -74,5 +74,61 @@ export class TransactionService {
       where: { book: { id: bookId } },
       order: { date: 'ASC', id: 'ASC' },
     });
+  }
+
+  async updateTransaction(transactionId: number, updateData: any) {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      // Get the transaction
+      const originalTransaction = await this.transactionRepository.findOne({
+        where: { id: transactionId },
+        relations: ['Book'],
+      });
+
+      // Update transaction
+      const updatedTransaction = await this.transactionRepository.save({
+        ...originalTransaction,
+        ...updateData,
+      });
+
+      // Recalculate all subsequent
+      const bookTransactions = await this.transactionRepository.find({
+        where: { book: { id: originalTransaction.book.id } },
+        order: { date: 'ASC', id: 'ASC' },
+      });
+
+      const updatedIndex = bookTransactions.findIndex(
+        (t) => t.id === transactionId,
+      );
+
+      //Recalculate running balances from this point
+      let previousBalance =
+        updatedIndex > 0
+          ? bookTransactions[updatedIndex - 1].runningBalance
+          : 0;
+      for (let i = updatedIndex; i < bookTransactions.length; i++) {
+        const transaction = bookTransactions[i];
+        previousBalance = this.calculateRunningBalance(
+          previousBalance,
+          transaction.category,
+          transaction.value,
+        );
+
+        await this.transactionRepository.save({
+          ...transaction,
+          runningBalance: previousBalance,
+        });
+      }
+      await queryRunner.commitTransaction();
+      return updatedTransaction;
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
   }
 }
