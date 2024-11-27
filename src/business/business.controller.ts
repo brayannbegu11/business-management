@@ -39,7 +39,7 @@ export class BusinessController {
 
   // Get all the business
   @Get('user/:id')
-  @UseGuards(JwtGuard)
+  // @UseGuards(JwtGuard)
   async findBusinessByUser(@Param('id') id: number): Promise<Business[]> {
     return this.businessService.findBusinessByUser(id);
   }

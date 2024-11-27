@@ -7,6 +7,7 @@ import { BookModule } from './book/book.module';
 import { DatafonoModule } from './datafono/datafono.module';
 import { config } from 'dotenv';
 import { BusinessModule } from './business/business.module';
+import { TransactionModule } from 'transactions/transactions.module';
 config();
 
 @Module({
@@ -21,6 +22,7 @@ config();
     BookModule,
     DatafonoModule,
     BusinessModule,
+    TransactionModule,
   ],
   controllers: [AppController],
   providers: [AppService],

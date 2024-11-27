@@ -1,8 +1,10 @@
 import { Business } from 'business/entities/business.entity';
+import { Transaction } from 'transactions/entities/transactions.entity';
 import {
   Column,
   Entity,
   JoinColumn,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -12,20 +14,17 @@ export class Book {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: false, default: () => 'CURRENT_DATE' })
-  date: string;
+  @Column({
+    type: 'decimal',
+    precision: 10,
+    scale: 2,
+    nullable: false,
+    default: 0,
+  })
+  initialBalance: number;
 
-  @Column({ nullable: false, default: '' })
-  description: string;
-
-  @Column({ nullable: false, default: '' })
-  category: string;
-
-  @Column({ nullable: false, default: 0 })
-  value: number;
-
-  @Column({ nullable: false, default: 0 })
-  balance: number;
+  @OneToMany(() => Transaction, (transaction) => transaction.book)
+  transactions: Transaction[];
 
   @OneToOne(() => Business, (business) => business.book, {
     onDelete: 'CASCADE',
