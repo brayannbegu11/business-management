@@ -85,14 +85,22 @@ export class TransactionService {
       // Get the transaction
       const originalTransaction = await this.transactionRepository.findOne({
         where: { id: transactionId },
-        relations: ['Book'],
+        relations: ['book'],
       });
+
+      if (!originalTransaction) {
+        throw new Error(`Transaction with ID ${transactionId} not found.`);
+      }
+
+      console.log('Original Transaction:', originalTransaction);
 
       // Update transaction
       const updatedTransaction = await this.transactionRepository.save({
         ...originalTransaction,
         ...updateData,
       });
+
+      console.log('Updated Transaction:', updatedTransaction);
 
       // Recalculate all subsequent
       const bookTransactions = await this.transactionRepository.find({
@@ -101,16 +109,24 @@ export class TransactionService {
       });
 
       const updatedIndex = bookTransactions.findIndex(
-        (t) => t.id === transactionId,
+        (t) => t.id == transactionId,
       );
 
-      //Recalculate running balances from this point
+      console.log('updatedIndex', updatedIndex);
+
+      // Recalculate running balances from this point
       let previousBalance =
         updatedIndex > 0
           ? bookTransactions[updatedIndex - 1].runningBalance
           : 0;
       for (let i = updatedIndex; i < bookTransactions.length; i++) {
         const transaction = bookTransactions[i];
+        console.log('transaction', transaction);
+        if (!transaction.category) {
+          throw new Error(
+            `Transaction with ID ${transaction.id} has no category`,
+          );
+        }
         previousBalance = this.calculateRunningBalance(
           previousBalance,
           transaction.category,
@@ -122,10 +138,12 @@ export class TransactionService {
           runningBalance: previousBalance,
         });
       }
+
       await queryRunner.commitTransaction();
       return updatedTransaction;
     } catch (error) {
       await queryRunner.rollbackTransaction();
+      console.error('Error updating transaction:', error);
       throw error;
     } finally {
       await queryRunner.release();
