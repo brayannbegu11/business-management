@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Transaction } from './entities/transactions.entity';
+import { BookTransaction } from './entities/bookTransactions.entity';
 // import { Book } from 'book/entities/book.entity';
 import { DataSource, Repository } from 'typeorm';
 import Decimal from 'decimal.js';
 
 @Injectable()
-export class TransactionService {
+export class BookTransactionService {
   constructor(
-    @InjectRepository(Transaction)
-    private transactionRepository: Repository<Transaction>,
+    @InjectRepository(BookTransaction)
+    private transactionRepository: Repository<BookTransaction>,
 
     private dataSource: DataSource,
   ) {}

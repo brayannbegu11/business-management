@@ -1,8 +1,8 @@
 import { Book } from 'book/entities/book.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('transactions')
-export class Transaction {
+@Entity('bookTransactions')
+export class BookTransaction {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -21,6 +21,6 @@ export class Transaction {
   @Column({ type: 'decimal', precision: 10, scale: 2, nullable: false })
   runningBalance: number;
 
-  @ManyToOne(() => Book, (book) => book.transactions)
+  @ManyToOne(() => Book, (book) => book.bookTransactions)
   book: Book;
 }

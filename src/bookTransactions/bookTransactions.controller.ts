@@ -7,12 +7,12 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
-import { TransactionService } from './transactions.service';
+import { BookTransactionService } from './bookTransactions.service';
 import { JwtGuard } from 'auth/jwt/jwt.guard';
 
-@Controller('transactions')
-export class TransactionController {
-  constructor(private transactionService: TransactionService) {}
+@Controller('bookTransactions')
+export class BookTransactionController {
+  constructor(private transactionService: BookTransactionService) {}
 
   @Post(':bookId')
   @UseGuards(JwtGuard)

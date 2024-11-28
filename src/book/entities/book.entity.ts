@@ -1,5 +1,5 @@
 import { Business } from 'business/entities/business.entity';
-import { Transaction } from 'transactions/entities/transactions.entity';
+import { BookTransaction } from 'bookTransactions/entities/bookTransactions.entity';
 import {
   Column,
   Entity,
@@ -23,8 +23,8 @@ export class Book {
   })
   initialBalance: number;
 
-  @OneToMany(() => Transaction, (transaction) => transaction.book)
-  transactions: Transaction[];
+  @OneToMany(() => BookTransaction, (transaction) => transaction.book)
+  bookTransactions: BookTransaction[];
 
   @OneToOne(() => Business, (business) => business.book, {
     onDelete: 'CASCADE',
